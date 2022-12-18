@@ -1,7 +1,4 @@
 import Head from 'next/head';
-// import { useContext } from "react";
-// import { GlobalContext } from "@utils/GlobalContext";
-import ThemeChanger from '@components/ThemeChanger';
 import Navbar from '@components/Navbar';
 import dynamic from 'next/dynamic';
 
@@ -10,8 +7,6 @@ const MapWithNoSSR = dynamic(() => import('@components/Map'), {
 });
 
 export default function Home() {
-  // const [darkMode, setDarkMode] = useContext(GlobalContext);
-
   return (
     <div>
       <Head>
