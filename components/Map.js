@@ -102,7 +102,7 @@ export default function Map() {
           <Button onClick={handleEditMarker}>Add / Edit Marker</Button>
         )}
       </div>
-      {isEdit && <p className="mb-4">You can click on map to add a new marker or click to existing blue marker to edit them</p>}
+      {isEdit && <p className="mb-4">Tips : you can click on map to add a new marker or click to existing blue marker to edit them</p>}
       <MapContainer
         center={[-7.12435755, 112.7190227512834]}
         zoom={20}
