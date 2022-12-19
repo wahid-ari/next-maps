@@ -9,7 +9,7 @@ import {
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '@components/Button';
 import { PencilIcon, TrashIcon } from '@heroicons/react/outline';
 
@@ -24,7 +24,7 @@ export default function Map() {
   const [editedIndex, setEditedIndex] = useState(null);
   const [editedValue, setEditedValue] = useState('');
 
-  const addMarkers = (e) => {
+  function addMarkers(e) {
     if (isEdit) {
       setMarkers([...markers, { description: 'untitled', position: [e.latlng.lat, e.latlng.lng] }]);
       handleExitEdit();
@@ -38,29 +38,29 @@ export default function Map() {
     return null;
   }
 
-  const handleEdit = (e) => {
-    setEditedIndex(parseInt(e.currentTarget.value));
-    setEditedValue(markers[parseInt(e.currentTarget.value)].description);
+  function handleEdit(id) {
+    setEditedIndex(parseInt(id));
+    setEditedValue(markers[parseInt(id)].description);
   };
 
-  const handleDelete = (e) => {
+  function handleDelete(id) {
     setMarkers(
-      markers.filter((_, index) => index !== parseInt(e.currentTarget.value))
+      markers.filter((_, index) => index !== parseInt(id))
     );
     setIsEdit(false);
   };
 
-  const handleEditChange = (e) => {
+  function handleEditChange(e) {
     setEditedValue(e.currentTarget.value);
   };
 
-  const handleExitEdit = () => {
+  function handleExitEdit() {
     setEditedIndex(null);
     setEditedValue('');
     setIsEdit(false);
   };
 
-  const handleMarkerUpdate = () => {
+  function handleMarkerUpdate() {
     let marks = markers.filter((mark, index) => index !== editedIndex);
     setMarkers([
       ...marks,
@@ -70,23 +70,19 @@ export default function Map() {
     setIsEdit(false);
   };
 
-  const handleEditMarker = () => {
+  function handleEditMarker() {
     setIsEdit(true);
   };
 
-  const handleUpdateMarker = () => {
+  function handleUpdateMarker() {
     setPermanentMarkers(markers);
     setIsEdit(false);
   };
 
-  const handleDismissEdit = () => {
+  function handleDismissEdit() {
     setIsEdit(false);
     setMarkers(permanentMarkers);
   };
-
-  // useEffect(() => {
-  //   console.log(markers)
-  // }, [markers])
 
   return (
     <>
@@ -122,7 +118,7 @@ export default function Map() {
           return (
             <Marker position={marker.position} key={index}>
               <Tooltip>
-                <div className="px-4 text-sm">
+                <div className="px-4 text-sm font-semibold">
                   {marker.description}
                 </div>
               </Tooltip>
@@ -138,7 +134,7 @@ export default function Map() {
                           placeholder="Description"
                           onChange={handleEditChange}
                           type="text"
-                          className="text-sm transition-all font-medium bg-white w-full px-4 py-[0.4rem] rounded-md mt-2 border focus:ring-1 ring-gray-300 focus:ring-blue-800 border-gray-300 focus:border-blue-800 outline-none"
+                          className="text-sm transition-all font-medium bg-white w-full px-4 py-[0.4rem] rounded-md mt-2 border focus:ring-1 ring-gray-300 focus:ring-blue-500 border-gray-300 focus:border-blue-500 outline-none"
                           autoComplete="off"
                           required
                         />
@@ -166,16 +162,14 @@ export default function Map() {
                       <div className="flex items-center gap-2">
                         <button
                           title='Delete'
-                          onClick={handleDelete}
-                          value={index}
+                          onClick={() => handleDelete(index)}
                           className="w-full flex items-center justify-center text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-neutral-800 bg-gray-50 hover:bg-gray-100 border border-neutral-300"
                         >
                           <TrashIcon className="h-4 w-4 text-red-500" />
                         </button>
                         <button
                           title='Edit'
-                          onClick={handleEdit}
-                          value={index}
+                          onClick={() => handleEdit(index)}
                           className="w-full flex items-center justify-center text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-neutral-800 bg-gray-50 hover:bg-gray-100 border border-neutral-300"
                         >
                           <PencilIcon className="h-4 w-4 text-sky-500" />
