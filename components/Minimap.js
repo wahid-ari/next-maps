@@ -11,12 +11,14 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet-defaulticon-compatibility';
 import { useState } from 'react';
 import Button from '@components/Button';
+import MinimapControl from "./MinimapControl"
 
 export default function Maps() {
 
   const [markers, setMarkers] = useState([
     { description: 'Auditorium', position: [-7.12609, 112.72264] },
     { description: 'Cakra', position: [-7.12930, 112.72472] },
+    { description: 'Rektorat', position: [-7.12907, 112.72229] },
   ]);
 
   const [isAddNewMarker, setIsAddNewMarker] = useState(false);
@@ -105,7 +107,7 @@ export default function Maps() {
 
       <MapContainer
         center={[-7.12817, 112.72430]}
-        zoom={17}
+        zoom={16}
         scrollWheelZoom={false}
         className="h-[32rem] z-[48] rounded"
         zoomAnimation={true}
@@ -113,6 +115,7 @@ export default function Maps() {
         markerZoomAnimation={true}
         closePopupOnClick={true}
       >
+        <MinimapControl position="topright" zoom={10} />
         <MyMap />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

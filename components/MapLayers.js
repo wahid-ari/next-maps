@@ -4,7 +4,10 @@ import {
   Popup,
   TileLayer,
   useMapEvent,
-  Tooltip
+  Tooltip,
+  FeatureGroup,
+  Circle,
+  Rectangle
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -12,11 +15,16 @@ import 'leaflet-defaulticon-compatibility';
 import { useState } from 'react';
 import Button from '@components/Button';
 
-export default function Maps() {
+export default function MapLayers() {
 
   const [markers, setMarkers] = useState([
     { description: 'Auditorium', position: [-7.12609, 112.72264] },
     { description: 'Cakra', position: [-7.12930, 112.72472] },
+  ]);
+
+  const [circleMarkers, setCircleMarkers] = useState([
+    { description: 'Gedung Pertemuan', position: [-7.12609, 112.72475] },
+    { description: 'Rektorat', position: [-7.12900, 112.72230] },
   ]);
 
   const [isAddNewMarker, setIsAddNewMarker] = useState(false);
@@ -75,24 +83,51 @@ export default function Maps() {
 
   return (
     <>
-      <table className="border rounded text-sm mb-4">
-        <thead>
-          <tr>
-            <td className="px-2.5 py-1 border font-medium">Name</td>
-            <td className="px-2.5 py-1 border font-medium">Latitude</td>
-            <td className="px-2.5 py-1 border font-medium">Longtitude</td>
-          </tr>
-        </thead>
-        <tbody>
-          {markers.map((marker, index) => (
-            <tr key={index + 1} className="border">
-              <td className="px-2.5 py-1 border">{marker.description}</td>
-              <td className="px-2.5 py-1 border">{marker.position[0]}</td>
-              <td className="px-2.5 py-1 border">{marker.position[1]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="grid lg:grid-cols-2 gap-4">
+        <div>
+          <p className="dark:text-white text-lg mb-2 font-medium">Marker</p>
+          <table className="border rounded text-sm mb-4">
+            <thead>
+              <tr>
+                <td className="px-2.5 py-1 border font-medium">Name</td>
+                <td className="px-2.5 py-1 border font-medium">Latitude</td>
+                <td className="px-2.5 py-1 border font-medium">Longtitude</td>
+              </tr>
+            </thead>
+            <tbody>
+              {markers.map((marker, index) => (
+                <tr key={index + 1} className="border">
+                  <td className="px-2.5 py-1 border">{marker.description}</td>
+                  <td className="px-2.5 py-1 border">{marker.position[0]}</td>
+                  <td className="px-2.5 py-1 border">{marker.position[1]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <p className="dark:text-white text-lg mb-2 font-medium">Circle</p>
+          <table className="border rounded text-sm mb-4">
+            <thead>
+              <tr>
+                <td className="px-2.5 py-1 border font-medium">Name</td>
+                <td className="px-2.5 py-1 border font-medium">Latitude</td>
+                <td className="px-2.5 py-1 border font-medium">Longtitude</td>
+              </tr>
+            </thead>
+            <tbody>
+              {circleMarkers.map((marker, index) => (
+                <tr key={index + 1} className="border">
+                  <td className="px-2.5 py-1 border">{marker.description}</td>
+                  <td className="px-2.5 py-1 border">{marker.position[0]}</td>
+                  <td className="px-2.5 py-1 border">{marker.position[1]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <div className="flex items-center gap-2 justify-end mb-4">
         {isAddNewMarker ?
@@ -113,11 +148,24 @@ export default function Maps() {
         markerZoomAnimation={true}
         closePopupOnClick={true}
       >
+
         <MyMap />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {circleMarkers.map((item, index) => (
+          <Circle key={index} center={[item.position[0], item.position[1]]} radius={50} pathOptions={{ color: '#3b82f6' }}>
+            <Tooltip>
+              <div className="px-4 text-sm font-semibold">
+                {item.description}
+              </div>
+            </Tooltip>
+            <Popup className="text-sm font-medium">{item.description}</Popup>
+          </Circle>
+        ))}
+
         {markers.map((marker, index) => {
           return (
             <Marker position={marker.position} key={index}>
