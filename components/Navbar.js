@@ -17,6 +17,9 @@ export default function Navbar() {
         <Link href="/leaflet" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
           Leaflet
         </Link>
+        <Link href="/leaflett" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
+          Leaflett
+        </Link>
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <ThemeChanger simple />
