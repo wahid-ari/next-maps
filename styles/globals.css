@@ -10,3 +10,7 @@ body {
 	overflow-x: hidden;
 	font-family: "Plus Jakarta Sans", sans-serif;
 }
+
+.hide-close-popup > a.leaflet-popup-close-button {
+	@apply hidden;
+}

@@ -9,28 +9,24 @@ import {
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Button from '@components/Button';
+import { XIcon } from '@heroicons/react/outline';
 
 export default function Maps() {
 
   const [markers, setMarkers] = useState([
-    { description: 'Auditorium', position: [-7.12609, 112.72264] },
-    { description: 'Cakra', position: [-7.12930, 112.72472] },
+    { description: 'Gedung Pertemuan', position: [-7.12621, 112.72468] },
+    { description: 'Perpustakaan', position: [-7.12735, 112.72311] },
+    { description: 'Cakra', position: [-7.12931, 112.72472] },
   ]);
-
+  
   const [isAddNewMarker, setIsAddNewMarker] = useState(false);
+  const [isEditingOldMarker, setIsEditingOldMarker] = useState(false)
   const [editedIndex, setEditedIndex] = useState(null);
   const [editedValue, setEditedValue] = useState('');
-
-  const [isEditingOldMarker, setIsEditingOldMarker] = useState(false)
-
-  function addMarkers(e) {
-    if (isAddNewMarker) {
-      setMarkers([...markers, { description: 'untitled', position: [e.latlng.lat, e.latlng.lng] }]);
-      handleExitEdit();
-    }
-  };
+  
+  const popupRef = useRef(null);
 
   function MyMap() {
     const map = useMapEvent({
@@ -38,6 +34,16 @@ export default function Maps() {
     });
     return null;
   }
+
+  function addMarkers(e) {
+    if (isAddNewMarker) {
+      setMarkers([...markers, { description: 'untitled', position: [e.latlng.lat, e.latlng.lng] }]);
+      handleExitEdit();
+    }
+    if(isEditingOldMarker) {
+      setIsEditingOldMarker(false)
+    }
+  };
 
   function handleEdit(id) {
     setIsEditingOldMarker(true)
@@ -57,9 +63,9 @@ export default function Maps() {
   };
 
   function handleExitEdit() {
-    setIsEditingOldMarker(true)
     setEditedIndex(null);
     setEditedValue('');
+    setIsEditingOldMarker(false)
     setIsAddNewMarker(false);
   };
 
@@ -67,11 +73,16 @@ export default function Maps() {
     let marks = markers.filter((_, index) => index !== editedIndex);
     setMarkers([
       ...marks,
-      { description: editedValue, position: markers[editedIndex].position },
+      { description: editedValue ? editedValue : 'Untitled', position: markers[editedIndex].position },
     ]);
     handleExitEdit();
     setIsAddNewMarker(false);
   };
+
+  function handleClosePopup() {
+    popupRef.current._closeButton.click()
+    setIsEditingOldMarker(false)
+  }
 
   return (
     <>
@@ -112,6 +123,7 @@ export default function Maps() {
         fadeAnimation={true}
         markerZoomAnimation={true}
         closePopupOnClick={true}
+        
       >
         <MyMap />
         <TileLayer
@@ -126,10 +138,13 @@ export default function Maps() {
                   {marker.description}
                 </div>
               </Tooltip>
-              <Popup>
+              <Popup ref={popupRef} className="hide-close-popup">
                 <div className="w-32">
                   {editedIndex === index && isEditingOldMarker ? (
-                    <div className="mb-8">
+                    <div className="mb-4">
+                      <button onClick={handleClosePopup} title="Close" className="absolute top-1 right-0.5 text-xs font-semibold px-1 rounded">
+                        <XIcon className="h-3.5 w-3.5" />
+                      </button>
                       <div className="mb-4">
                         <label className="text-sm text-left font-medium">Name</label>
                         <input
@@ -160,7 +175,10 @@ export default function Maps() {
                     </div>
                   ) : null}
 
-                  <div>
+                  <div className={`${isEditingOldMarker ? 'hidden' : 'block'}`}>
+                    <button onClick={handleClosePopup} title="Close" className="absolute top-1 right-0.5 text-xs font-semibold px-1 rounded">
+                      <XIcon className="h-3.5 w-3.5"/>
+                    </button>
                     <h1 className="font-semibold mb-4 text-center">{marker.description}</h1>
                     <div className="flex items-center gap-2">
                       <button

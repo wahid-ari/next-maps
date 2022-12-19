@@ -118,7 +118,7 @@ export default function Map() {
           return (
             <Marker position={marker.position} key={index}>
               <Tooltip>
-                <div className="px-4 text-sm font-semibold">
+                <div className="px-4 text-sm font-medium">
                   {marker.description}
                 </div>
               </Tooltip>

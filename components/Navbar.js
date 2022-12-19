@@ -20,6 +20,9 @@ export default function Navbar() {
           <Link href="/leaflett" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
             Leaflett
           </Link>
+          <Link href="/leaflettt" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
+            Leaflettt
+          </Link>
           <Link href="/minimap" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
             Minimap
           </Link>
