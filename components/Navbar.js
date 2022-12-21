@@ -29,6 +29,12 @@ export default function Navbar() {
           <Link href="/layers" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
             Layers
           </Link>
+          <Link href="/control" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
+            Control
+          </Link>
+          <Link href="/animated" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
+            Animated
+          </Link>
         </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <ThemeChanger simple />

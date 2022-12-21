@@ -5,7 +5,9 @@ import {
   TileLayer,
   useMapEvent,
   Tooltip,
-  Circle
+  Circle,
+  LayerGroup,
+  LayersControl
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -13,7 +15,7 @@ import 'leaflet-defaulticon-compatibility';
 import { useState } from 'react';
 import Button from '@components/Button';
 
-export default function MapLayers() {
+export default function LayerControl() {
 
   const [markers, setMarkers] = useState([
     { description: 'Auditorium', position: [-7.12609, 112.72264] },
@@ -153,84 +155,97 @@ export default function MapLayers() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {circleMarkers.map((item, index) => (
-          <Circle key={index} center={[item.position[0], item.position[1]]} radius={50} pathOptions={{ color: '#3b82f6' }}>
-            <Tooltip>
-              <div className="px-4 text-sm font-semibold">
-                {item.description}
-              </div>
-            </Tooltip>
-            <Popup className="text-sm font-medium">{item.description}</Popup>
-          </Circle>
-        ))}
+        <LayersControl position="topright">
 
-        {markers.map((marker, index) => {
-          return (
-            <Marker position={marker.position} key={index}>
-              <Tooltip>
-                <div className="px-4 text-sm font-semibold">
-                  {marker.description}
-                </div>
-              </Tooltip>
-              <Popup>
-                <div className="w-32">
-                  {editedIndex === index && isEditingOldMarker ? (
-                    <div className="mb-8">
-                      <div className="mb-4">
-                        <label className="text-sm text-left font-medium">Name</label>
-                        <input
-                          name="description"
-                          value={editedValue}
-                          placeholder="Description"
-                          onChange={handleEditChange}
-                          type="text"
-                          className="text-sm transition-all font-medium bg-white w-full px-4 py-[0.4rem] rounded-md mt-2 border focus:ring-1 ring-gray-300 focus:ring-blue-500 border-gray-300 focus:border-blue-500 outline-none"
-                          autoComplete="off"
-                          required
-                        />
+          <LayersControl.Overlay name="Marker with popup">
+            <LayerGroup>
+              {markers.map((marker, index) => {
+                return (
+                  <Marker position={marker.position} key={index}>
+                    <Tooltip>
+                      <div className="px-4 text-sm font-semibold">
+                        {marker.description}
                       </div>
-                      <button
-                        title='Save New Name'
-                        onClick={handleMarkerUpdate}
-                        className="w-full mb-2 text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-white bg-green-600 hover:bg-green-700 border border-neutral-300"
-                      >
-                        Save
-                      </button>
-                      <button
-                        title='Cancel Edit Name'
-                        onClick={handleExitEdit}
-                        className="w-full text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-neutral-800 bg-gray-50 hover:bg-gray-100 border border-neutral-300"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : null}
+                    </Tooltip>
+                    <Popup>
+                      <div className="w-32">
+                        {editedIndex === index && isEditingOldMarker ? (
+                          <div className="mb-8">
+                            <div className="mb-4">
+                              <label className="text-sm text-left font-medium">Name</label>
+                              <input
+                                name="description"
+                                value={editedValue}
+                                placeholder="Description"
+                                onChange={handleEditChange}
+                                type="text"
+                                className="text-sm transition-all font-medium bg-white w-full px-4 py-[0.4rem] rounded-md mt-2 border focus:ring-1 ring-gray-300 focus:ring-blue-500 border-gray-300 focus:border-blue-500 outline-none"
+                                autoComplete="off"
+                                required
+                              />
+                            </div>
+                            <button
+                              title='Save New Name'
+                              onClick={handleMarkerUpdate}
+                              className="w-full mb-2 text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-white bg-green-600 hover:bg-green-700 border border-neutral-300"
+                            >
+                              Save
+                            </button>
+                            <button
+                              title='Cancel Edit Name'
+                              onClick={handleExitEdit}
+                              className="w-full text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-neutral-800 bg-gray-50 hover:bg-gray-100 border border-neutral-300"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : null}
 
-                  <div>
-                    <h1 className="font-semibold mb-4 text-center">{marker.description}</h1>
-                    <div className="flex items-center gap-2">
-                      <button
-                        title='Delete'
-                        onClick={() => handleDelete(index)}
-                        className="w-full flex items-center justify-center text-xs text-red-500 transition-all outline-none px-4 py-2 rounded font-semibold bg-gray-50 hover:bg-gray-100 border border-neutral-300"
-                      >
-                        Delete
-                      </button>
-                      <button
-                        title='Edit'
-                        onClick={() => handleEdit(index)}
-                        className="w-full flex items-center justify-center text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-sky-500 bg-gray-50 hover:bg-gray-100 border border-neutral-300"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </div>
+                        <div>
+                          <h1 className="font-semibold mb-4 text-center">{marker.description}</h1>
+                          <div className="flex items-center gap-2">
+                            <button
+                              title='Delete'
+                              onClick={() => handleDelete(index)}
+                              className="w-full flex items-center justify-center text-xs text-red-500 transition-all outline-none px-4 py-2 rounded font-semibold bg-gray-50 hover:bg-gray-100 border border-neutral-300"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              title='Edit'
+                              onClick={() => handleEdit(index)}
+                              className="w-full flex items-center justify-center text-xs transition-all outline-none px-4 py-2 rounded font-semibold text-sky-500 bg-gray-50 hover:bg-gray-100 border border-neutral-300"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </div>
 
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+            </LayerGroup>
+          </LayersControl.Overlay>
+
+          <LayersControl.Overlay checked name="Circle with popup">
+            <LayerGroup>
+              {circleMarkers.map((item, index) => (
+                <Circle key={index} center={[item.position[0], item.position[1]]} radius={50} pathOptions={{ color: '#3b82f6' }}>
+                  <Tooltip>
+                    <div className="px-4 text-sm font-semibold">
+                      {item.description}
+                    </div>
+                  </Tooltip>
+                  <Popup className="text-sm font-medium">{item.description}</Popup>
+                </Circle>
+              ))}
+            </LayerGroup>
+          </LayersControl.Overlay>
+
+        </LayersControl>
+
       </MapContainer>
     </>
   );

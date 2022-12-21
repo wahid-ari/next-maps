@@ -18,3 +18,15 @@ body {
 .leaflet-interactive {
 	@apply focus:outline-none;
 }
+
+.leaflet-control-layers-overlays {
+	@apply space-y-1.5;
+}
+
+input.leaflet-control-layers-selector {
+	@apply top-0 mt-0;
+}
+
+.leaflet-control-layers-overlays > label > span {
+	@apply flex items-center gap-2;
+}
