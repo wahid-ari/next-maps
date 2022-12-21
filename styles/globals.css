@@ -14,3 +14,7 @@ body {
 .hide-close-popup > a.leaflet-popup-close-button {
 	@apply hidden;
 }
+
+.leaflet-interactive {
+	@apply focus:outline-none;
+}
