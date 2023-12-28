@@ -35,6 +35,9 @@ export default function Navbar() {
           <Link href="/animated" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
             Animated
           </Link>
+          <Link href="/location" className="text-sky-500 hover:text-sky-600 transition-all font-medium">
+            Location
+          </Link>
         </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <ThemeChanger simple />
