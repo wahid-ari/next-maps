@@ -30,3 +30,12 @@ input.leaflet-control-layers-selector {
 .leaflet-control-layers-overlays > label > span {
 	@apply flex items-center gap-2;
 }
+
+/* Search Form */
+div.leaflet-top.leaflet-left > div.leaflet-geosearch-button > form > input.glass  {
+	@apply dark:text-neutral-800
+}
+/* Search Result */
+div.leaflet-top.leaflet-left > div.leaflet-geosearch-button > form > div.results.active  {
+	@apply dark:text-neutral-800
+}

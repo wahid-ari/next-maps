@@ -31,10 +31,10 @@ export default function Location() {
       <main className="dark:bg-neutral-900 min-h-screen">
         <div className="max-w-5xl mx-auto p-4">
           <p>Click on Map to set location</p>
-          <MyMap name="Location Name" marker={marker} setMarker={setMarker} enableEdit enableSearch />
+          <MyMap name="Location Name" className="z-0" marker={marker} setMarker={setMarker} enableEdit enableSearch />
           <MyMap
             name="Location Name" marker={marker}
-            className='h-64 mt-8'
+            className='h-64 mt-8 z-0'
             zoom={6}
           />
         </div>
